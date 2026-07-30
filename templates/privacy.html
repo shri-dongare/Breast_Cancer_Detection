@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Privacy Policy | AI Breast Cancer Detection</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-heart-pulse"></i>
+
+            <span>BreastCare AI</span>
+
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+
+                <a href="{{ url_for('index') }}">
+
+                    Home
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('contact') }}">
+
+                    Contact
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('privacy') }}" class="active">
+
+                    Privacy
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('terms') }}">
+
+                    Terms
+
+                </a>
+
+            </li>
+
+            {% if current_user.is_authenticated %}
+
+            <li>
+
+                <a href="{{ url_for('logout') }}" class="logout-btn">
+
+                    Logout
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+    <main class="dashboard-wrapper">
+
+        <section class="hero-banner">
+
+            <div class="hero-content">
+
+                <span class="chip">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    Privacy Policy
+
+                </span>
+
+                <h1>
+
+                    Protecting Your Data & Privacy
+
+                </h1>
+
+                <p>
+
+                    Your privacy is important to us. This Privacy Policy explains how the
+                    AI Breast Cancer Detection using Deep Learning platform collects,
+                    processes, stores, and protects your information while using this
+                    application.
+
+                </p>
+
+            </div>
+
+            <div class="hero-art">
+
+                <i class="fa-solid fa-user-shield" style="font-size:10rem;color:#06b6d4;"></i>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                Introduction
+
+            </h2>
+
+            <p>
+
+                This application has been developed as a Final Year Engineering Project
+                to demonstrate the use of Artificial Intelligence and Deep Learning for
+                breast cancer detection from mammography images. The platform is intended
+                for educational, research, and demonstration purposes only.
+
+            </p>
+
+            <p>
+
+                We respect every user's privacy and are committed to maintaining the
+                confidentiality, integrity, and security of information shared through
+                this website.
+
+            </p>
+
+            <p>
+
+                By accessing or using this application, you acknowledge that you have
+                read, understood, and agreed to the practices described in this Privacy
+                Policy.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-database"></i>
+
+                Information We Collect
+
+            </h2>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <h3>
+
+                        Account Information
+
+                    </h3>
+
+                    <p>
+
+                        When creating an account, users may provide their name, email address,
+                        username, and encrypted password for authentication purposes.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-image"></i>
+
+                    <h3>
+
+                        Medical Images
+
+                    </h3>
+
+                    <p>
+
+                        Users may upload mammography images that are processed by the deep
+                        learning model solely to generate prediction results.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-server"></i>
+
+                    <h3>
+
+                        System Information
+
+                    </h3>
+
+                    <p>
+
+                        Basic technical information such as browser type, operating system,
+                        device characteristics, and application logs may be collected to improve
+                        performance and reliability.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-gears"></i>
+
+                How Your Information Is Used
+
+            </h2>
+
+            <p>
+
+                The information collected through this platform is used exclusively for
+                the following purposes:
+
+            </p>
+
+            <ul class="requirements-list">
+
+                <li>
+
+                    Authenticating registered users.
+
+                </li>
+
+                <li>
+
+                    Processing uploaded mammogram images using the AI model.
+
+                </li>
+
+                <li>
+
+                    Displaying prediction results and confidence scores.
+
+                </li>
+
+                <li>
+
+                    Improving system stability, security, and usability.
+
+                </li>
+
+                <li>
+
+                    Supporting educational demonstrations and academic research.
+
+                </li>
+
+                <li>
+
+                    Preventing unauthorized access and misuse of the platform.
+
+                </li>
+
+            </ul>
+
+        </section>
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-image"></i>
+
+                Uploaded Mammography Images
+
+            </h2>
+
+            <p>
+
+                Mammography images uploaded through this platform are processed by the
+                integrated Deep Learning model for the purpose of generating breast
+                cancer prediction results. These images are never intentionally shared
+                with third parties without the user's consent.
+
+            </p>
+
+            <p>
+
+                Depending on the deployment configuration, uploaded images may either
+                be processed temporarily in memory or stored securely for research,
+                debugging, and performance evaluation. Users should avoid uploading
+                images containing unnecessary personally identifiable information.
+
+            </p>
+
+            <p>
+
+                The project developers take reasonable precautions to protect uploaded
+                files from unauthorized access; however, no online system can guarantee
+                absolute security.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-lock"></i>
+
+                User Authentication
+
+            </h2>
+
+            <p>
+
+                Registered users authenticate using secure login credentials.
+                Passwords should always be kept confidential and should never be
+                shared with other individuals.
+
+            </p>
+
+            <p>
+
+                Passwords are stored using secure cryptographic hashing mechanisms
+                rather than plain text wherever supported by the application.
+
+            </p>
+
+            <p>
+
+                Users are responsible for maintaining the confidentiality of their
+                accounts and for all activities performed using their credentials.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-cookie-bite"></i>
+
+                Cookies & Session Management
+
+            </h2>
+
+            <p>
+
+                This application may use browser cookies or secure session tokens
+                to maintain authenticated login sessions and improve the overall
+                user experience.
+
+            </p>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-user-check"></i>
+
+                    <h3>
+
+                        Login Sessions
+
+                    </h3>
+
+                    <p>
+
+                        Session cookies help identify authenticated users while they
+                        navigate through the application.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-sliders"></i>
+
+                    <h3>
+
+                        User Preferences
+
+                    </h3>
+
+                    <p>
+
+                        Certain browser settings may be remembered temporarily to
+                        improve usability and accessibility.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-shield"></i>
+
+                    <h3>
+
+                        Security
+
+                    </h3>
+
+                    <p>
+
+                        Session management mechanisms help protect user accounts
+                        against unauthorized access.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-clock-rotate-left"></i>
+
+                Data Retention
+
+            </h2>
+
+            <p>
+
+                User account information is retained only as long as necessary for
+                authentication, educational purposes, or project administration.
+
+            </p>
+
+            <p>
+
+                Uploaded mammography images may be automatically deleted after
+                processing unless long-term storage has been explicitly enabled by
+                the project administrator.
+
+            </p>
+
+            <p>
+
+                Temporary application logs may be retained for debugging,
+                performance optimization, and system maintenance.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-share-nodes"></i>
+
+                Sharing of Information
+
+            </h2>
+
+            <p>
+
+                We do not sell, rent, or trade personal information or uploaded
+                medical images to advertisers or commercial organizations.
+
+            </p>
+
+            <p>
+
+                Information may only be disclosed when required by applicable law,
+                university regulations, or to protect the security and integrity of
+                the application.
+
+            </p>
+
+            <ul class="requirements-list">
+
+                <li>
+
+                    No commercial sale of personal information.
+
+                </li>
+
+                <li>
+
+                    No sharing for marketing purposes.
+
+                </li>
+
+                <li>
+
+                    Disclosure only when legally required.
+
+                </li>
+
+                <li>
+
+                    Internal access limited to authorized administrators.
+
+                </li>
+
+            </ul>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-microchip"></i>
+
+                Technologies Used
+
+            </h2>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-brands fa-python"></i>
+
+                    <h3>
+
+                        Flask
+
+                    </h3>
+
+                    <p>
+
+                        Provides secure backend routing, authentication,
+                        and application management.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                    <h3>
+
+                        TensorFlow / Keras
+
+                    </h3>
+
+                    <p>
+
+                        Performs AI inference for breast cancer prediction using
+                        trained deep learning models.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-database"></i>
+
+                    <h3>
+
+                        SQLite Database
+
+                    </h3>
+
+                    <p>
+
+                        Stores user account information and application data
+                        required for authentication.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-shield-virus"></i>
+
+                Data Security
+
+            </h2>
+
+            <p>
+
+                Protecting user information is one of our highest priorities. We
+                implement reasonable administrative, technical, and organizational
+                measures to safeguard personal information and uploaded medical images
+                against unauthorized access, disclosure, alteration, or destruction.
+
+            </p>
+
+            <p>
+
+                Access to sensitive information is restricted to authorized
+                administrators responsible for maintaining and improving the
+                application. Authentication mechanisms, encrypted password storage,
+                and secure session management help reduce security risks.
+
+            </p>
+
+            <p>
+
+                Although we strive to use industry-standard security practices,
+                transmission of information over the Internet can never be guaranteed
+                to be completely secure. Users should take appropriate precautions to
+                protect their own devices and login credentials.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-user-shield"></i>
+
+                Your Rights
+
+            </h2>
+
+            <p>
+
+                Depending on applicable laws and institutional policies, users may
+                have certain rights regarding their personal information.
+
+            </p>
+
+            <ul class="requirements-list">
+
+                <li>
+
+                    Access information associated with your account.
+
+                </li>
+
+                <li>
+
+                    Request correction of inaccurate information.
+
+                </li>
+
+                <li>
+
+                    Request deletion of personal information where applicable.
+
+                </li>
+
+                <li>
+
+                    Request clarification regarding data processing practices.
+
+                </li>
+
+                <li>
+
+                    Contact the project administrator regarding privacy concerns.
+
+                </li>
+
+            </ul>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-link"></i>
+
+                Third-Party Services
+
+            </h2>
+
+            <p>
+
+                This project may utilize open-source libraries and publicly available
+                software frameworks to provide AI prediction, authentication, user
+                interface components, and application functionality.
+
+            </p>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-brands fa-python"></i>
+
+                    <h3>
+
+                        Python Ecosystem
+
+                    </h3>
+
+                    <p>
+
+                        Python libraries are used for backend processing,
+                        preprocessing, and machine learning operations.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-network-wired"></i>
+
+                    <h3>
+
+                        Open Source Libraries
+
+                    </h3>
+
+                    <p>
+
+                        CSS, JavaScript, and AI libraries are integrated to improve
+                        functionality, accessibility, and performance.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-cloud"></i>
+
+                    <h3>
+
+                        Deployment Platform
+
+                    </h3>
+
+                    <p>
+
+                        When deployed online, limited technical information such as
+                        server logs may be collected by the hosting provider for
+                        operational and security purposes.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-child"></i>
+
+                Children's Privacy
+
+            </h2>
+
+            <p>
+
+                This application is designed primarily for educational, research,
+                and demonstration purposes. It is not intended for direct use by
+                children without appropriate supervision.
+
+            </p>
+
+            <p>
+
+                We do not knowingly collect personal information from children. If
+                such information is discovered, reasonable efforts will be made to
+                remove it in accordance with applicable policies.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-stethoscope"></i>
+
+                Medical Disclaimer
+
+            </h2>
+
+            <p>
+
+                The predictions generated by this AI system are intended solely as
+                decision-support information for research and educational purposes.
+                They are not a substitute for professional medical advice,
+                diagnosis, screening, or treatment.
+
+            </p>
+
+            <p>
+
+                Users should always consult qualified healthcare professionals for
+                interpretation of mammography images and clinical decision-making.
+                The developers, institution, and contributors are not responsible
+                for medical decisions made solely on the basis of AI-generated
+                predictions.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-file-pen"></i>
+
+                Changes to This Privacy Policy
+
+            </h2>
+
+            <p>
+
+                This Privacy Policy may be updated periodically to reflect changes
+                in project functionality, legal requirements, deployment
+                environments, or security improvements.
+
+            </p>
+
+            <p>
+
+                Updated versions will become effective immediately after publication
+                on this page. Users are encouraged to review this Privacy Policy
+                periodically to remain informed about how their information is
+                handled.
+
+            </p>
+
+        </section>
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-headset"></i>
+
+                Contact Us
+
+            </h2>
+
+            <p>
+
+                If you have any questions regarding this Privacy Policy, data
+                handling practices, security measures, or the operation of this
+                application, you may contact the project administrator.
+
+            </p>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-envelope fa-2x"></i>
+
+                    <h3>
+
+                        Email Support
+
+                    </h3>
+
+                    <p>
+
+                        support@breastcareai.com
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-location-dot fa-2x"></i>
+
+                    <h3>
+
+                        Location
+
+                    </h3>
+
+                    <p>
+
+                        Pune, Maharashtra, India
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-graduation-cap fa-2x"></i>
+
+                    <h3>
+
+                        Project
+
+                    </h3>
+
+                    <p>
+
+                        AI Breast Cancer Detection using Deep Learning
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <footer class="footer">
+
+            <div class="footer-content">
+
+                <div>
+
+                    <h3>
+
+                        AI Breast Cancer Detection
+
+                    </h3>
+
+                    <p>
+
+                        A Final Year Engineering Project that leverages Artificial
+                        Intelligence and Deep Learning to assist in the early detection
+                        of breast cancer from mammography images. The platform is
+                        designed for education, research, and technology demonstration.
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Quick Links
+
+                    </h4>
+
+                    <ul>
+
+                        <li>
+
+                            <a href="{{ url_for('index') }}">
+
+                                Home
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('contact') }}">
+
+                                Contact
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('terms') }}">
+
+                                Terms & Conditions
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Privacy Summary
+
+                    </h4>
+
+                    <ul>
+
+                        <li>
+
+                            Secure Authentication
+
+                        </li>
+
+                        <li>
+
+                            AI-Based Image Processing
+
+                        </li>
+
+                        <li>
+
+                            Responsible Data Handling
+
+                        </li>
+
+                        <li>
+
+                            Educational & Research Use
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <hr style="margin:40px 0;border-color:rgba(255,255,255,.08);">
+
+            <div style="text-align:center;line-height:1.9;">
+
+                <p style="color:#94a3b8;">
+
+                    © 2026 AI Breast Cancer Detection using Deep Learning.
+                    All Rights Reserved.
+
+                </p>
+
+                <p style="color:#64748b;font-size:.95rem;max-width:900px;margin:12px auto;">
+
+                    This application is intended solely for educational, academic,
+                    and research purposes. AI-generated predictions must always be
+                    reviewed and confirmed by qualified healthcare professionals.
+                    Neither the developers nor the institution shall be held liable
+                    for decisions made solely on the basis of AI-generated results.
+
+                </p>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+
+</html>

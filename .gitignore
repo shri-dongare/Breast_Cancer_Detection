@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual Environment
+venv/
+.env
+
+# Database
+instance/
+database/users.db
+
+# Dataset (Don't upload training images)
+Dataset/
+
+# Uploaded files
+static/uploads/*
+!static/uploads/.gitkeep
+
+static/masks/*
+!static/masks/.gitkeep

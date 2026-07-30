@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Terms & Conditions | AI Breast Cancer Detection</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-heart-pulse"></i>
+
+            <span>BreastCare AI</span>
+
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+
+                <a href="{{ url_for('index') }}">
+
+                    Home
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('contact') }}">
+
+                    Contact
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('privacy') }}">
+
+                    Privacy
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('terms') }}" class="active">
+
+                    Terms
+
+                </a>
+
+            </li>
+
+            {% if current_user.is_authenticated %}
+
+            <li>
+
+                <a href="{{ url_for('logout') }}" class="logout-btn">
+
+                    Logout
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+    <main class="dashboard-wrapper">
+
+        <section class="hero-banner">
+
+            <div class="hero-content">
+
+                <span class="chip">
+
+                    <i class="fa-solid fa-scale-balanced"></i>
+
+                    Terms & Conditions
+
+                </span>
+
+                <h1>
+
+                    Website Terms of Use
+
+                </h1>
+
+                <p>
+
+                    Please read these Terms & Conditions carefully before using the
+                    AI Breast Cancer Detection using Deep Learning platform. By accessing
+                    or using this application, you agree to comply with these terms.
+
+                </p>
+
+            </div>
+
+            <div class="hero-art">
+
+                <i class="fa-solid fa-file-contract" style="font-size:10rem;color:#06b6d4;"></i>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-circle-info"></i>
+
+                Acceptance of Terms
+
+            </h2>
+
+            <p>
+
+                By creating an account, accessing, or using this application,
+                you acknowledge that you have read, understood, and agreed to
+                these Terms & Conditions.
+
+            </p>
+
+            <p>
+
+                If you do not agree with any part of these Terms, you should
+                discontinue the use of this website immediately.
+
+            </p>
+
+            <p>
+
+                These Terms apply to all visitors, registered users,
+                administrators, researchers, and any other individuals who
+                access this platform.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-graduation-cap"></i>
+
+                Purpose of the Platform
+
+            </h2>
+
+            <p>
+
+                This application has been developed as a Final Year Engineering
+                Project to demonstrate the use of Artificial Intelligence,
+                Deep Learning, and Medical Image Analysis for breast cancer
+                prediction using mammography images.
+
+            </p>
+
+            <p>
+
+                The platform is intended solely for educational, research,
+                academic, demonstration, and software development purposes.
+
+            </p>
+
+            <p>
+
+                It is not intended to function as a certified medical device,
+                clinical diagnostic system, or replacement for professional
+                healthcare services.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-user"></i>
+
+                User Responsibilities
+
+            </h2>
+
+            <ul class="requirements-list">
+
+                <li>
+
+                    Provide accurate registration information.
+
+                </li>
+
+                <li>
+
+                    Maintain the confidentiality of your login credentials.
+
+                </li>
+
+                <li>
+
+                    Use the application responsibly and ethically.
+
+                </li>
+
+                <li>
+
+                    Avoid uploading malicious, illegal, or copyrighted content.
+
+                </li>
+
+                <li>
+
+                    Do not attempt to compromise application security.
+
+                </li>
+
+                <li>
+
+                    Comply with all applicable laws and regulations.
+
+                </li>
+
+            </ul>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-user-lock"></i>
+
+                Account Security
+
+            </h2>
+
+            <p>
+
+                Users are responsible for protecting their usernames and
+                passwords. Any activity performed using your account is your
+                responsibility.
+
+            </p>
+
+            <p>
+
+                If you suspect unauthorized access to your account, you should
+                notify the project administrator immediately and change your
+                password as soon as possible.
+
+            </p>
+
+        </section>
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-circle-check"></i>
+
+                Acceptable Use Policy
+
+            </h2>
+
+            <p>
+
+                Users agree to use this application only for lawful,
+                educational, research, and demonstration purposes. Any
+                misuse of the platform is strictly prohibited.
+
+            </p>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-check"></i>
+
+                    <h3>
+
+                        Permitted Use
+
+                    </h3>
+
+                    <p>
+
+                        Upload mammography images for AI prediction,
+                        academic learning, software testing, and research
+                        activities.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-ban"></i>
+
+                    <h3>
+
+                        Prohibited Activities
+
+                    </h3>
+
+                    <p>
+
+                        Reverse engineering, unauthorized access,
+                        hacking attempts, malware uploads, or misuse
+                        of system resources are strictly prohibited.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <h3>
+
+                        Responsible Usage
+
+                    </h3>
+
+                    <p>
+
+                        Users should operate the platform ethically,
+                        responsibly, and in accordance with applicable
+                        laws and institutional policies.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-image"></i>
+
+                Image Upload Guidelines
+
+            </h2>
+
+            <p>
+
+                The application accepts mammography images solely for
+                AI-based prediction and educational demonstration.
+
+            </p>
+
+            <ul class="requirements-list">
+
+                <li>
+
+                    Upload only images that you are authorized to use.
+
+                </li>
+
+                <li>
+
+                    Do not upload copyrighted material without permission.
+
+                </li>
+
+                <li>
+
+                    Avoid uploading images containing unnecessary
+                    personally identifiable information.
+
+                </li>
+
+                <li>
+
+                    Do not upload malicious files disguised as images.
+
+                </li>
+
+                <li>
+
+                    Uploaded files must comply with supported formats
+                    specified by the application.
+
+                </li>
+
+                <li>
+
+                    Administrators may reject or remove inappropriate
+                    uploads without prior notice.
+
+                </li>
+
+            </ul>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-brain"></i>
+
+                Artificial Intelligence Predictions
+
+            </h2>
+
+            <p>
+
+                Prediction results generated by this application are
+                produced using Deep Learning algorithms trained on
+                mammography image datasets.
+
+            </p>
+
+            <p>
+
+                AI predictions represent statistical model outputs and
+                confidence estimates rather than confirmed medical
+                diagnoses.
+
+            </p>
+
+            <p>
+
+                Factors such as image quality, dataset diversity,
+                preprocessing techniques, and model limitations may
+                influence prediction accuracy.
+
+            </p>
+
+            <p>
+
+                Users acknowledge that prediction results should always
+                be interpreted together with clinical evaluation and
+                expert medical opinion.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-user-doctor"></i>
+
+                Medical Disclaimer
+
+            </h2>
+
+            <p>
+
+                This platform is <strong>not</strong> intended to diagnose,
+                treat, cure, or prevent any disease.
+
+            </p>
+
+            <p>
+
+                AI-generated predictions are provided solely for
+                educational, academic, and research purposes.
+
+            </p>
+
+            <p>
+
+                Clinical decisions should always be made by qualified
+                healthcare professionals after reviewing the patient's
+                complete medical history, physical examination,
+                laboratory investigations, and medical imaging.
+
+            </p>
+
+            <p>
+
+                Neither the developers, educational institution,
+                contributors, nor supervisors accept responsibility
+                for medical decisions based solely on AI-generated
+                predictions.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-chart-line"></i>
+
+                Accuracy & Limitations
+
+            </h2>
+
+            <p>
+
+                Although significant effort has been invested in
+                developing and testing the Deep Learning model,
+                prediction accuracy cannot be guaranteed for every
+                individual case.
+
+            </p>
+
+            <ul class="requirements-list">
+
+                <li>
+
+                    Predictions may contain false positives.
+
+                </li>
+
+                <li>
+
+                    Predictions may contain false negatives.
+
+                </li>
+
+                <li>
+
+                    Model performance depends on image quality.
+
+                </li>
+
+                <li>
+
+                    Results should always be clinically verified.
+
+                </li>
+
+                <li>
+
+                    Future model updates may improve performance.
+
+                </li>
+
+            </ul>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-copyright"></i>
+
+                Intellectual Property
+
+            </h2>
+
+            <p>
+
+                The website design, source code, documentation,
+                AI implementation, graphics, user interface,
+                and educational content are protected by applicable
+                intellectual property laws.
+
+            </p>
+
+            <p>
+
+                Unauthorized copying, redistribution, commercial
+                use, or modification without appropriate permission
+                may violate copyright or licensing requirements.
+
+            </p>
+
+        </section>
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                Limitation of Liability
+
+            </h2>
+
+            <p>
+
+                This application is provided on an "as is" and "as available"
+                basis without warranties of any kind, either express or implied.
+
+            </p>
+
+            <p>
+
+                While every reasonable effort has been made to develop an
+                accurate and reliable AI prediction system, the developers
+                cannot guarantee uninterrupted availability, complete accuracy,
+                or error-free operation.
+
+            </p>
+
+            <p>
+
+                Under no circumstances shall the developers, project
+                supervisors, educational institution, contributors, or hosting
+                providers be liable for any direct, indirect, incidental,
+                consequential, special, or exemplary damages arising from the
+                use or inability to use this application.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-handshake-angle"></i>
+
+                Indemnification
+
+            </h2>
+
+            <p>
+
+                By using this application, users agree to indemnify and hold
+                harmless the developers, supervisors, educational institution,
+                contributors, and hosting providers from any claims,
+                liabilities, damages, losses, costs, or legal expenses arising
+                from:
+
+            </p>
+
+            <ul class="requirements-list">
+
+                <li>
+
+                    Violation of these Terms & Conditions.
+
+                </li>
+
+                <li>
+
+                    Misuse of the application.
+
+                </li>
+
+                <li>
+
+                    Unauthorized access attempts.
+
+                </li>
+
+                <li>
+
+                    Uploading illegal or copyrighted content.
+
+                </li>
+
+                <li>
+
+                    Decisions made solely using AI-generated predictions.
+
+                </li>
+
+            </ul>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-cubes"></i>
+
+                Third-Party Software & Libraries
+
+            </h2>
+
+            <p>
+
+                This application incorporates various open-source software,
+                libraries, frameworks, and development tools to deliver its
+                functionality.
+
+            </p>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-brands fa-python"></i>
+
+                    <h3>
+
+                        Python & Flask
+
+                    </h3>
+
+                    <p>
+
+                        Backend routing, authentication, and application
+                        management.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-brain"></i>
+
+                    <h3>
+
+                        TensorFlow / Keras
+
+                    </h3>
+
+                    <p>
+
+                        Deep Learning model training and AI prediction.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-code"></i>
+
+                    <h3>
+
+                        HTML, CSS & JavaScript
+
+                    </h3>
+
+                    <p>
+
+                        Responsive interface, animations, and interactive user
+                        experience.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-server"></i>
+
+                Service Availability
+
+            </h2>
+
+            <p>
+
+                We strive to keep the platform available at all times.
+                However, maintenance activities, software updates,
+                server issues, or unforeseen technical problems may
+                temporarily interrupt service.
+
+            </p>
+
+            <p>
+
+                The developers reserve the right to modify, suspend,
+                or discontinue any part of the application without
+                prior notice whenever necessary.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-user-slash"></i>
+
+                Suspension or Termination
+
+            </h2>
+
+            <p>
+
+                User accounts may be suspended or permanently removed if
+                users violate these Terms & Conditions or engage in
+                activities that compromise the security, integrity,
+                availability, or lawful operation of the platform.
+
+            </p>
+
+            <ul class="requirements-list">
+
+                <li>
+
+                    Attempting unauthorized access.
+
+                </li>
+
+                <li>
+
+                    Uploading malicious software.
+
+                </li>
+
+                <li>
+
+                    Disrupting application services.
+
+                </li>
+
+                <li>
+
+                    Providing false registration information.
+
+                </li>
+
+                <li>
+
+                    Violating applicable laws.
+
+                </li>
+
+            </ul>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-gavel"></i>
+
+                Governing Law
+
+            </h2>
+
+            <p>
+
+                These Terms & Conditions shall be governed by and
+                interpreted in accordance with the laws of India.
+
+            </p>
+
+            <p>
+
+                Any disputes arising from the use of this application
+                shall be subject to the jurisdiction of the competent
+                courts located in India.
+
+            </p>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-file-pen"></i>
+
+                Changes to These Terms
+
+            </h2>
+
+            <p>
+
+                We reserve the right to modify these Terms &
+                Conditions whenever necessary to reflect changes
+                in project functionality, applicable laws,
+                deployment environments, or security practices.
+
+            </p>
+
+            <p>
+
+                Continued use of the application after updates
+                constitutes acceptance of the revised Terms &
+                Conditions.
+
+            </p>
+
+        </section>
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-envelope"></i>
+
+                Contact Information
+
+            </h2>
+
+            <p>
+
+                If you have questions regarding these Terms & Conditions,
+                the operation of this application, or your rights and
+                responsibilities while using the platform, please contact
+                the project administrator.
+
+            </p>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-envelope-open-text fa-2x"></i>
+
+                    <h3>
+
+                        Email Support
+
+                    </h3>
+
+                    <p>
+
+                        support@breastcareai.com
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-location-dot fa-2x"></i>
+
+                    <h3>
+
+                        Location
+
+                    </h3>
+
+                    <p>
+
+                        Pune, Maharashtra, India
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-graduation-cap fa-2x"></i>
+
+                    <h3>
+
+                        Project
+
+                    </h3>
+
+                    <p>
+
+                        AI Breast Cancer Detection using Deep Learning
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-circle-exclamation"></i>
+
+                Final Disclaimer
+
+            </h2>
+
+            <p>
+
+                This website has been developed as a Final Year Engineering
+                Project to demonstrate the practical application of Artificial
+                Intelligence, Deep Learning, and Medical Image Analysis.
+                Although every effort has been made to design a reliable
+                system, the application is intended solely for educational,
+                academic, and research purposes.
+
+            </p>
+
+            <p>
+
+                AI-generated predictions must always be interpreted by
+                qualified healthcare professionals. Users should never make
+                medical decisions based solely on the results produced by
+                this application.
+
+            </p>
+
+            <p>
+
+                By continuing to use this website, you acknowledge that you
+                understand and accept these Terms & Conditions and agree to
+                use the platform responsibly and lawfully.
+
+            </p>
+
+        </section>
+
+        <footer class="footer">
+
+            <div class="footer-content">
+
+                <div>
+
+                    <h3>
+
+                        AI Breast Cancer Detection
+
+                    </h3>
+
+                    <p>
+
+                        A modern Artificial Intelligence platform that
+                        demonstrates the use of Deep Learning techniques for
+                        assisting in breast cancer prediction from mammography
+                        images while promoting research, innovation, and
+                        healthcare awareness.
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Quick Links
+
+                    </h4>
+
+                    <ul>
+
+                        <li>
+
+                            <a href="{{ url_for('index') }}">
+
+                                Home
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('contact') }}">
+
+                                Contact
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('privacy') }}">
+
+                                Privacy Policy
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Highlights
+
+                    </h4>
+
+                    <ul>
+
+                        <li>
+
+                            Deep Learning Prediction
+
+                        </li>
+
+                        <li>
+
+                            Flask Web Application
+
+                        </li>
+
+                        <li>
+
+                            Secure User Authentication
+
+                        </li>
+
+                        <li>
+
+                            Educational & Research Project
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+            <hr style="margin:40px 0;border-color:rgba(255,255,255,.08);">
+
+            <div style="text-align:center;line-height:1.9;">
+
+                <p style="color:#94a3b8;">
+
+                    © 2026 AI Breast Cancer Detection using Deep Learning.
+                    All Rights Reserved.
+
+                </p>
+
+                <p style="color:#64748b;font-size:.95rem;max-width:900px;margin:12px auto;">
+
+                    This platform is intended exclusively for educational,
+                    academic, and research purposes. It is not a certified
+                    medical device and must not be used as a substitute for
+                    professional medical diagnosis or treatment.
+
+                </p>
+
+            </div>
+
+        </footer>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+
+</html>

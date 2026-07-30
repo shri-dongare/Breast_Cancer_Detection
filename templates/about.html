@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meridian — Clinical intelligence, in real time</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --ink: #080c14;
+            --surface: #0f1826;
+            --surface-2: #131f30;
+            --line: rgba(255, 255, 255, 0.08);
+            --line-strong: rgba(255, 255, 255, 0.16);
+            --teal: #2fe6c4;
+            --violet: #8b7cf6;
+            --rose: #fb7a9a;
+            --text: #eaf1f7;
+            --muted: #8ca0b3;
+            --muted-2: #5c6f82;
+            --radius: 20px;
+            --radius-sm: 14px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--ink);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.001ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.001ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        ::selection {
+            background: var(--teal);
+            color: #04120e;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .eyebrow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12.5px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--teal);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--teal);
+            box-shadow: 0 0 10px var(--teal);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            line-height: 1.08;
+        }
+
+        .grad-text {
+            background: linear-gradient(100deg, #f5faf9 5%, var(--teal) 45%, var(--violet) 80%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .container {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 0 32px;
+        }
+
+        section {
+            position: relative;
+        }
+
+        /* ---------- Scroll progress ---------- */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--teal), var(--violet));
+            z-index: 9999;
+            width: 0%;
+            box-shadow: 0 0 12px var(--teal);
+        }
+
+        /* ---------- Nav ---------- */
+        .nav-wrap {
+            position: fixed;
+            top: 18px;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .nav {
+            pointer-events: all;
+            display: flex;
+            align-items: center;
+            gap: 36px;
+            padding: 12px 14px 12px 22px;
+            background: rgba(15, 24, 38, 0.6);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid var(--line);
+            border-radius: 100px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+            transition: border-color .3s ease, box-shadow .3s ease;
+        }
+
+        .nav:hover {
+            border-color: var(--line-strong);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 15.5px;
+            letter-spacing: -0.01em;
+        }
+
+        .nav-logo svg {
+            display: block;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 28px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .nav-links a {
+            position: relative;
+            padding: 4px 0;
+            transition: color .25s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 1px;
+            width: 0%;
+            background: var(--teal);
+            transition: width .25s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 10px 18px;
+            border-radius: 100px;
+            background: var(--text);
+            color: #08131a;
+            transition: transform .25s ease, box-shadow .25s ease;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(47, 230, 196, 0.25);
+        }
+
+        /* ---------- Buttons ---------- */
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 14.5px;
+            padding: 14px 26px;
+            border-radius: 100px;
+            cursor: pointer;
+            border: none;
+            overflow: hidden;
+            transition: transform .3s cubic-bezier(.2, .8, .2, 1), box-shadow .3s ease;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--teal), var(--violet));
+            color: #06110f;
+            box-shadow: 0 8px 30px -8px rgba(139, 124, 246, 0.55);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 36px -6px rgba(139, 124, 246, 0.7);
+        }
+
+        .btn-ghost {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--line-strong);
+            color: var(--text);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: rippleAnim .6s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes rippleAnim {
+            to {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        /* ---------- Hero ---------- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 160px 24px 100px;
+            position: relative;
+        }
+
+        #aurora-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.85;
+        }
+
+        .hero-vignette {
+            position: absolute;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            background: radial-gradient(ellipse 80% 55% at 50% 30%, transparent 0%, var(--ink) 78%);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 820px;
+        }
+
+        .hero .eyebrow {
+            margin-bottom: 22px;
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 6.4vw, 74px);
+            margin-bottom: 22px;
+        }
+
+        .hero p.lead {
+            font-size: clamp(16px, 2vw, 19px);
+            color: var(--muted);
+            max-width: 600px;
+            margin: 0 auto 38px;
+            line-height: 1.6;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 70px;
+        }
+
+        .hero-note {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted-2);
+            margin-top: 14px;
+        }
+
+        /* Signal line panel */
+        .signal-panel {
+            position: relative;
+            z-index: 2;
+            width: min(920px, 92vw);
+            border-radius: 24px;
+            border: 1px solid var(--line-strong);
+            background: linear-gradient(180deg, rgba(19, 31, 48, 0.75), rgba(10, 16, 26, 0.75));
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 30px 90px -30px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            padding: 28px 30px 22px;
+            transform-style: preserve-3d;
+            transition: transform .15s ease;
+        }
+
+        .signal-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .signal-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted);
+            letter-spacing: 0.06em;
+        }
+
+        .signal-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .signal-dots span {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--line-strong);
+        }
+
+        .signal-svg {
+            width: 100%;
+            height: 160px;
+            display: block;
+        }
+
+        .signal-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-top: 20px;
+            border-top: 1px solid var(--line);
+            padding-top: 18px;
+        }
+
+        .metric-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted-2);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 6px;
+        }
+
+        .metric-val {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .metric-val.up {
+            color: var(--teal);
+        }
+
+        /* ---------- Logos strip ---------- */
+        .logos {
+            padding: 80px 0 40px;
+        }
+
+        .logos-label {
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted-2);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 34px;
+        }
+
+        .logos-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 32px;
+            opacity: 0.55;
+        }
+
+        .logos-row span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--muted);
+        }
+
+        /* ---------- Section heading ---------- */
+        .section-head {
+            max-width: 640px;
+            margin: 0 auto 60px;
+            text-align: center;
+        }
+
+        .section-head h2 {
+            font-size: clamp(28px, 4vw, 44px);
+            margin: 16px 0 14px;
+        }
+
+        .section-head p {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .section-pad {
+            padding: 130px 0;
+        }
+
+        /* ---------- Bento features ---------- */
+        .bento {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            position: relative;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.01));
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 30px;
+            overflow: hidden;
+            transition: transform .4s cubic-bezier(.2, .8, .2, 1), border-color .4s ease, box-shadow .4s ease;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, transparent 30%, rgba(47, 230, 196, 0.5), rgba(139, 124, 246, 0.5) 70%, transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity .4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: transparent;
+            box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(47, 230, 196, 0.08);
+            border: 1px solid rgba(47, 230, 196, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: transform .4s ease, background .4s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.08) rotate(-4deg);
+            background: rgba(47, 230, 196, 0.16);
+        }
+
+        .card-icon svg {
+            width: 22px;
+            height: 22px;
+            stroke: var(--teal);
+        }
+
+        .card h3 {
+            font-size: 19px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 14.5px;
+            line-height: 1.6;
+        }
+
+        .b1 {
+            grid-column: span 3;
+            grid-row: span 2;
+        }
+
+        .b2 {
+            grid-column: span 3;
+        }
+
+        .b3 {
+            grid-column: span 3;
+        }
+
+        .b4 {
+            grid-column: span 2;
+        }
+
+        .b5 {
+            grid-column: span 2;
+        }
+
+        .b6 {
+            grid-column: span 2;
+        }
+
+        .card-visual {
+            margin-top: 22px;
+            height: 120px;
+            border-radius: 12px;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--line);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* ---------- Timeline ---------- */
+        .timeline {
+            position: relative;
+            margin-top: 40px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 34px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--line);
+        }
+
+        .timeline-line-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 1px;
+            width: 0%;
+            background: linear-gradient(90deg, var(--teal), var(--violet));
+            box-shadow: 0 0 12px var(--teal);
+        }
+
+        .timeline-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            position: relative;
+        }
+
+        .tl-step {
+            text-align: left;
+        }
+
+        .tl-num {
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--line-strong);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--teal);
+            margin-bottom: 22px;
+            position: relative;
+            z-index: 2;
+            transition: box-shadow .4s ease, border-color .4s ease;
+        }
+
+        .tl-step.active .tl-num {
+            box-shadow: 0 0 0 6px rgba(47, 230, 196, 0.08);
+            border-color: var(--teal);
+        }
+
+        .tl-step h3 {
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+        .tl-step p {
+            color: var(--muted);
+            font-size: 14.5px;
+            line-height: 1.6;
+        }
+
+        /* ---------- Stats ---------- */
+        .stats-wrap {
+            border-radius: 28px;
+            border: 1px solid var(--line);
+            background: linear-gradient(160deg, rgba(139, 124, 246, 0.06), rgba(47, 230, 196, 0.04));
+            padding: 70px 40px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(34px, 4.5vw, 52px);
+            font-weight: 600;
+            background: linear-gradient(120deg, #fff, var(--teal));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .stat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 10px;
+            letter-spacing: 0.04em;
+        }
+
+        /* ---------- Dashboard preview ---------- */
+        .preview-wrap {
+            display: flex;
+            justify-content: center;
+            perspective: 1600px;
+        }
+
+        .preview-card {
+            width: min(980px, 100%);
+            border-radius: 26px;
+            border: 1px solid var(--line-strong);
+            background: linear-gradient(180deg, rgba(19, 31, 48, 0.9), rgba(9, 14, 22, 0.9));
+            box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.7);
+            padding: 26px;
+            transform: rotateX(6deg);
+            transition: transform .4s ease;
+        }
+
+        .preview-card:hover {
+            transform: rotateX(0deg);
+        }
+
+        .preview-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .preview-bar span {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: var(--line-strong);
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            gap: 16px;
+        }
+
+        .preview-panel {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 18px;
+            min-height: 220px;
+        }
+
+        .preview-panel h4 {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 500;
+            margin-bottom: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.04em;
+        }
+
+        .bar-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .bar-row .bar-track {
+            flex: 1;
+            height: 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+        }
+
+        .bar-row .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            background: linear-gradient(90deg, var(--teal), var(--violet));
+            width: 0%;
+        }
+
+        .bar-row .bar-pct {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            width: 34px;
+            text-align: right;
+        }
+
+        /* ---------- Testimonials ---------- */
+        .testi-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+        }
+
+        .testi-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--line);
+            border-radius: var(--radius);
+            padding: 28px;
+            transition: transform .35s ease, border-color .35s ease;
+        }
+
+        .testi-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--line-strong);
+        }
+
+        .testi-quote {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #dbe6ee;
+            margin-bottom: 22px;
+        }
+
+        .testi-person {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--teal), var(--violet));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 13px;
+            color: #06110f;
+        }
+
+        .testi-name {
+            font-size: 13.5px;
+            font-weight: 600;
+        }
+
+        .testi-role {
+            font-size: 12.5px;
+            color: var(--muted-2);
+        }
+
+        /* ---------- Pricing ---------- */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            align-items: stretch;
+        }
+
+        .price-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 34px 30px;
+            display: flex;
+            flex-direction: column;
+            transition: transform .35s ease, border-color .35s ease;
+        }
+
+        .price-card:hover {
+            transform: translateY(-6px);
+        }
+
+        .price-card.featured {
+            border: 1px solid transparent;
+            background: linear-gradient(var(--surface), var(--surface)) padding-box,
+                linear-gradient(135deg, var(--teal), var(--violet)) border-box;
+            position: relative;
+        }
+
+        .price-card.featured::after {
+            content: 'MOST COMMON';
+            position: absolute;
+            top: -13px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10.5px;
+            letter-spacing: 0.08em;
+            background: linear-gradient(135deg, var(--teal), var(--violet));
+            color: #06110f;
+            padding: 5px 12px;
+            border-radius: 100px;
+            font-weight: 600;
+        }
+
+        .price-tier {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 14px;
+        }
+
+        .price-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .price-amount span {
+            font-size: 14px;
+            color: var(--muted);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        .price-desc {
+            color: var(--muted);
+            font-size: 13.5px;
+            margin-bottom: 26px;
+        }
+
+        .price-features {
+            list-style: none;
+            margin-bottom: 30px;
+            flex: 1;
+        }
+
+        .price-features li {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13.5px;
+            color: #cdd9e2;
+            padding: 9px 0;
+            border-top: 1px solid var(--line);
+        }
+
+        .price-features li:first-child {
+            border-top: none;
+        }
+
+        .price-features svg {
+            width: 15px;
+            height: 15px;
+            stroke: var(--teal);
+            flex-shrink: 0;
+        }
+
+        /* ---------- Final CTA ---------- */
+        .cta-final {
+            border-radius: 32px;
+            padding: 90px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(ellipse at 50% 0%, rgba(139, 124, 246, 0.18), transparent 60%), var(--surface);
+            border: 1px solid var(--line);
+        }
+
+        .cta-final h2 {
+            font-size: clamp(30px, 4.5vw, 48px);
+            margin-bottom: 18px;
+        }
+
+        .cta-final p {
+            color: var(--muted);
+            margin-bottom: 36px;
+            font-size: 16px;
+        }
+
+        /* ---------- Footer ---------- */
+        footer {
+            padding: 70px 0 40px;
+            border-top: 1px solid var(--line);
+            margin-top: 60px;
+        }
+
+        .footer-top {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 50px;
+            margin-bottom: 60px;
+        }
+
+        .footer-brand {
+            max-width: 280px;
+        }
+
+        .footer-brand p {
+            color: var(--muted);
+            font-size: 13.5px;
+            line-height: 1.7;
+            margin-top: 14px;
+        }
+
+        .footer-cols {
+            display: flex;
+            gap: 70px;
+            flex-wrap: wrap;
+        }
+
+        .footer-col h4 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--muted);
+            margin-bottom: 18px;
+        }
+
+        .footer-col a {
+            display: block;
+            font-size: 14px;
+            color: #c4d1db;
+            margin-bottom: 12px;
+            transition: color .2s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--teal);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            padding-top: 26px;
+            border-top: 1px solid var(--line);
+            font-size: 12.5px;
+            color: var(--muted-2);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ---------- Reveal ---------- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width:900px) {
+            .bento {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .b1,
+            .b2,
+            .b3,
+            .b4,
+            .b5,
+            .b6 {
+                grid-column: span 2;
+                grid-row: auto;
+            }
+
+            .timeline-row {
+                grid-template-columns: 1fr;
+                gap: 36px;
+            }
+
+            .timeline-line {
+                display: none;
+            }
+
+            .stats-wrap {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .testi-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .preview-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .footer-top {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width:560px) {
+            .signal-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .container {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <div class="nav-wrap">
+        <nav class="nav">
+            <div class="nav-logo">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 12h4l2-7 4 14 2-7h6" stroke="url(#navgrad)" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                    <defs>
+                        <linearGradient id="navgrad" x1="0" y1="0" x2="24" y2="24">
+                            <stop stop-color="#2fe6c4" />
+                            <stop offset="1" stop-color="#8b7cf6" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+                Meridian
+            </div>
+            <div class="nav-links">
+                <a href="#platform">Platform</a>
+                <a href="#workflow">Workflow</a>
+                <a href="#proof">Proof</a>
+                <a href="#pricing">Pricing</a>
+            </div>
+            <a href="#cta" class="nav-cta">Request access</a>
+        </nav>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+        <canvas id="aurora-canvas"></canvas>
+        <div class="hero-vignette"></div>
+        <div class="hero-content">
+            <div class="eyebrow">Now reading signal at 40,000 beds nationwide</div>
+            <h1>Turn every patient signal into <span class="grad-text">clinical certainty.</span></h1>
+            <p class="lead">Meridian listens to vitals, notes, and labs as they happen — and gives clinicians one calm,
+                confident read on what to do next. No dashboards to hunt through. Just the answer, on time.</p>
+            <div class="hero-actions">
+                <button class="btn btn-primary" data-ripple>Request access</button>
+                <button class="btn btn-ghost" data-ripple>Watch 2-min overview</button>
+            </div>
+        </div>
+
+        <div class="signal-panel" id="tiltPanel">
+            <div class="signal-top">
+                <div class="signal-title">LIVE&nbsp;·&nbsp;WARD&nbsp;4B&nbsp;·&nbsp;SIGNAL COMPOSITE</div>
+                <div class="signal-dots"><span></span><span></span><span></span></div>
+            </div>
+            <svg class="signal-svg" viewBox="0 0 900 160" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="lineGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#2fe6c4" />
+                        <stop offset="55%" stop-color="#8b7cf6" />
+                        <stop offset="100%" stop-color="#fb7a9a" />
+                    </linearGradient>
+                    <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#2fe6c4" stop-opacity="0.18" />
+                        <stop offset="100%" stop-color="#2fe6c4" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+                <path id="signalArea" d="" fill="url(#areaGrad)"></path>
+                <path id="signalPath" d="" fill="none" stroke="url(#lineGrad)" stroke-width="2.2"
+                    stroke-linecap="round"></path>
+            </svg>
+            <div class="signal-metrics">
+                <div>
+                    <div class="metric-label">Heart rate</div>
+                    <div class="metric-val">78 <span
+                            style="font-size:12px;color:var(--muted);font-family:'Inter'">bpm</span></div>
+                </div>
+                <div>
+                    <div class="metric-label">SpO₂</div>
+                    <div class="metric-val">97<span
+                            style="font-size:12px;color:var(--muted);font-family:'Inter'">%</span></div>
+                </div>
+                <div>
+                    <div class="metric-label">Risk score</div>
+                    <div class="metric-val up">↓ 2.1</div>
+                </div>
+                <div>
+                    <div class="metric-label">Model confidence</div>
+                    <div class="metric-val">99.2<span
+                            style="font-size:12px;color:var(--muted);font-family:'Inter'">%</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LOGOS -->
+    <section class="logos">
+        <div class="container">
+            <div class="logos-label">Trusted by clinical teams at</div>
+            <div class="logos-row">
+                <span>Ashford General</span>
+                <span>Northlake Health</span>
+                <span>Ridgeview Medical</span>
+                <span>Union Regional</span>
+                <span>Cedar Point Clinics</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section class="section-pad" id="platform">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow" style="justify-content:center;">The platform</div>
+                <h2>Everything a bedside team needs, <span class="grad-text">nothing they don't.</span></h2>
+                <p>Meridian sits quietly under your existing systems and speaks up only when it matters.</p>
+            </div>
+
+            <div class="bento">
+                <div class="card b1 reveal">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12h4l2-8 4 16 2-8h6" />
+                        </svg></div>
+                    <h3>Early warning, hours ahead</h3>
+                    <p>Meridian's deterioration model fuses vitals, labs, and nursing notes to flag risk 6–10 hours
+                        before a traditional early-warning score.</p>
+                    <div class="card-visual" id="visualWave"></div>
+                </div>
+                <div class="card b2 reveal">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="4" y="4" width="16" height="16" rx="3" />
+                            <path d="M9 9h6v6H9z" />
+                        </svg></div>
+                    <h3>Ambient documentation</h3>
+                    <p>Captures the room, drafts the note in your EHR's template, and leaves the final word to the
+                        clinician.</p>
+                </div>
+                <div class="card b3 reveal">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="8" />
+                            <path d="M12 8v4l3 2" />
+                        </svg></div>
+                    <h3>Triage in seconds</h3>
+                    <p>Incoming cases are ranked by acuity the moment intake data lands, so the sickest patient is never
+                        waiting.</p>
+                </div>
+                <div class="card b4 reveal">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2l3 7h7l-5.6 4.3L18 21l-6-4.4L6 21l1.6-7.7L2 9h7z" />
+                        </svg></div>
+                    <h3>Explainable, always</h3>
+                    <p>Every recommendation ships with the three signals that drove it — plain language, no black box.
+                    </p>
+                </div>
+                <div class="card b5 reveal">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 12a8 8 0 1116 0 8 8 0 01-16 0z" />
+                            <path d="M12 8v4l2.5 1.5" />
+                        </svg></div>
+                    <h3>Fits existing workflow</h3>
+                    <p>Native connectors for Epic, Cerner, and Meditech. Live in a ward in under three weeks.</p>
+                </div>
+                <div class="card b6 reveal">
+                    <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2a5 5 0 00-5 5v3a5 5 0 0010 0V7a5 5 0 00-5-5z" />
+                            <path d="M19 10a7 7 0 01-14 0M12 17v5" />
+                        </svg></div>
+                    <h3>HIPAA & SOC 2 native</h3>
+                    <p>Encrypted at rest and in transit, with a full audit trail on every model decision.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="section-pad" id="workflow">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow" style="justify-content:center;">How it connects</div>
+                <h2>Three steps from <span class="grad-text">raw signal to bedside action.</span></h2>
+                <p>Meridian was built to disappear into the shift, not add another screen to check.</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-line">
+                    <div class="timeline-line-fill" id="tlFill"></div>
+                </div>
+                <div class="timeline-row">
+                    <div class="tl-step reveal">
+                        <div class="tl-num">01</div>
+                        <h3>Connect your data</h3>
+                        <p>Read-only connectors pull vitals, labs, med-admin records, and clinical notes straight from
+                            your EHR — no rip and replace.</p>
+                    </div>
+                    <div class="tl-step reveal">
+                        <div class="tl-num">02</div>
+                        <h3>Meridian reads the pattern</h3>
+                        <p>Models trained on 40M+ inpatient hours score risk continuously and surface the handful of
+                            cases that need eyes now.</p>
+                    </div>
+                    <div class="tl-step reveal">
+                        <div class="tl-num">03</div>
+                        <h3>The team acts, in context</h3>
+                        <p>Alerts land where clinicians already work — with the reasoning attached — so the next step is
+                            obvious, not another lookup.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STATS -->
+    <section class="section-pad" id="proof">
+        <div class="container">
+            <div class="stats-wrap reveal">
+                <div>
+                    <div class="stat-num" data-count="97.4" data-decimals="1">0</div>
+                    <div class="stat-label">DIAGNOSTIC AUC</div>
+                </div>
+                <div>
+                    <div class="stat-num" data-count="8.3" data-decimals="1">0</div>
+                    <div class="stat-label">AVG. HOURS EARLIER WARNING</div>
+                </div>
+                <div>
+                    <div class="stat-num" data-count="142" data-decimals="0">0</div>
+                    <div class="stat-label">HOSPITALS LIVE</div>
+                </div>
+                <div>
+                    <div class="stat-num" data-count="31" data-decimals="0">0</div>
+                    <div class="stat-label">% LESS CHARTING TIME</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PREVIEW -->
+    <section class="section-pad">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow" style="justify-content:center;">Inside the ward view</div>
+                <h2>One screen, <span class="grad-text">the whole picture.</span></h2>
+            </div>
+            <div class="preview-wrap reveal">
+                <div class="preview-card">
+                    <div class="preview-bar"><span></span><span></span><span></span></div>
+                    <div class="preview-grid">
+                        <div class="preview-panel">
+                            <h4>RISK DISTRIBUTION — WARD 4B</h4>
+                            <div class="bar-row"><span style="width:70px;font-size:12px;color:var(--muted)">Bed
+                                    04</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" data-w="82"></div>
+                                </div><span class="bar-pct">82%</span>
+                            </div>
+                            <div class="bar-row"><span style="width:70px;font-size:12px;color:var(--muted)">Bed
+                                    09</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" data-w="61"></div>
+                                </div><span class="bar-pct">61%</span>
+                            </div>
+                            <div class="bar-row"><span style="width:70px;font-size:12px;color:var(--muted)">Bed
+                                    02</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" data-w="44"></div>
+                                </div><span class="bar-pct">44%</span>
+                            </div>
+                            <div class="bar-row"><span style="width:70px;font-size:12px;color:var(--muted)">Bed
+                                    11</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" data-w="22"></div>
+                                </div><span class="bar-pct">22%</span>
+                            </div>
+                            <div class="bar-row"><span style="width:70px;font-size:12px;color:var(--muted)">Bed
+                                    07</span>
+                                <div class="bar-track">
+                                    <div class="bar-fill" data-w="13"></div>
+                                </div><span class="bar-pct">13%</span>
+                            </div>
+                        </div>
+                        <div class="preview-panel">
+                            <h4>TOP DRIVERS — BED 04</h4>
+                            <p style="font-size:13px;color:#cdd9e2;line-height:1.8">↑ Respiratory rate trend (6h)<br>↓
+                                Lactate clearance<br>↑ Nursing-note acuity language</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="section-pad">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow" style="justify-content:center;">From the floor</div>
+                <h2>Built with clinicians, <span class="grad-text">not just for them.</span></h2>
+            </div>
+            <div class="testi-grid">
+                <div class="testi-card reveal">
+                    <p class="testi-quote">"The first tool I've used that tells me why, not just what. My charge nurses
+                        trust it because they can check its work."</p>
+                    <div class="testi-person">
+                        <div class="avatar">RM</div>
+                        <div>
+                            <div class="testi-name">Dr. Rina Mehta</div>
+                            <div class="testi-role">Chief of Critical Care, Ashford General</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card reveal">
+                    <p class="testi-quote">"We cut escalation lag by more than half in the first quarter. It's the quiet
+                        kind of impact that shows up in outcomes, not headlines."</p>
+                    <div class="testi-person">
+                        <div class="avatar">JK</div>
+                        <div>
+                            <div class="testi-name">James Kowalski</div>
+                            <div class="testi-role">VP Clinical Ops, Northlake Health</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testi-card reveal">
+                    <p class="testi-quote">"Rollout was the easiest EHR-adjacent deployment we've done. Three weeks from
+                        contract to first live ward."</p>
+                    <div class="testi-person">
+                        <div class="avatar">AT</div>
+                        <div>
+                            <div class="testi-name">Aisha Thompson</div>
+                            <div class="testi-role">Director of IT, Ridgeview Medical</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="section-pad" id="pricing">
+        <div class="container">
+            <div class="section-head reveal">
+                <div class="eyebrow" style="justify-content:center;">Pricing</div>
+                <h2>Priced per ward, <span class="grad-text">not per headache.</span></h2>
+                <p>Every tier includes full model access. You pay for scale, not features held hostage.</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="price-card reveal">
+                    <div class="price-tier">Single ward</div>
+                    <div class="price-amount">$2,400<span>/mo</span></div>
+                    <div class="price-desc">For one unit piloting clinical AI for the first time.</div>
+                    <ul class="price-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Up to 40 beds</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Early-warning model</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>1 EHR connector</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Business-hours support</li>
+                    </ul>
+                    <button class="btn btn-ghost" data-ripple style="width:100%;">Talk to sales</button>
+                </div>
+                <div class="price-card featured reveal">
+                    <div class="price-tier">Hospital-wide</div>
+                    <div class="price-amount">$9,800<span>/mo</span></div>
+                    <div class="price-desc">For facilities standardizing across every unit.</div>
+                    <ul class="price-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Unlimited beds</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Full model suite + triage</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Ambient documentation</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>24/7 clinical support line</li>
+                    </ul>
+                    <button class="btn btn-primary" data-ripple style="width:100%;">Request access</button>
+                </div>
+                <div class="price-card reveal">
+                    <div class="price-tier">Health system</div>
+                    <div class="price-amount">Custom</div>
+                    <div class="price-desc">For multi-site systems with a central data strategy.</div>
+                    <ul class="price-features">
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Everything in Hospital-wide</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Custom model tuning</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Dedicated implementation team</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                                <path d="M5 13l4 4L19 7" />
+                            </svg>Named clinical success partner</li>
+                    </ul>
+                    <button class="btn btn-ghost" data-ripple style="width:100%;">Contact us</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL CTA -->
+    <section class="section-pad" id="cta">
+        <div class="container">
+            <div class="cta-final reveal">
+                <div class="eyebrow" style="justify-content:center;">Ready when your team is</div>
+                <h2>Give your bedside team <span class="grad-text">an earlier warning.</span></h2>
+                <p>Most units are live within three weeks of signing. No forklift EHR migration required.</p>
+                <div class="hero-actions" style="margin-bottom:0;">
+                    <button class="btn btn-primary" data-ripple>Request access</button>
+                    <button class="btn btn-ghost" data-ripple>Book a walkthrough</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 12h4l2-7 4 14 2-7h6" stroke="url(#navgrad2)" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <defs>
+                                <linearGradient id="navgrad2" x1="0" y1="0" x2="24" y2="24">
+                                    <stop stop-color="#2fe6c4" />
+                                    <stop offset="1" stop-color="#8b7cf6" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        Meridian
+                    </div>
+                    <p>Clinical intelligence for hospitals that want an earlier, calmer warning — not another dashboard.
+                    </p>
+                </div>
+                <div class="footer-cols">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <a href="#platform">Platform</a>
+                        <a href="#workflow">Workflow</a>
+                        <a href="#pricing">Pricing</a>
+                        <a href="#">Security</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Company</h4>
+                        <a href="#">About</a>
+                        <a href="#">Careers</a>
+                        <a href="#">Clinical validation</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Resources</h4>
+                        <a href="#">Documentation</a>
+                        <a href="#">Case studies</a>
+                        <a href="#">Support</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>© 2026 Meridian Health, Inc.</span>
+                <span>SOC 2 Type II · HIPAA compliant</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        /* ---------- Scroll progress ---------- */
+        const progressBar = document.getElementById('scrollProgress');
+        window.addEventListener('scroll', () => {
+            const h = document.documentElement;
+            const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+            progressBar.style.width = pct + '%';
+        });
+
+        /* ---------- Aurora canvas background ---------- */
+        const canvas = document.getElementById('aurora-canvas');
+        const ctx = canvas.getContext('2d');
+        let W, H;
+        function resize() { W = canvas.width = canvas.offsetWidth; H = canvas.height = canvas.offsetHeight; }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const blobs = [
+            { x: 0.25, y: 0.28, r: 0.42, c: '47,230,196', dx: 0.00012, dy: 0.00009, t: 0 },
+            { x: 0.72, y: 0.22, r: 0.38, c: '139,124,246', dx: -0.00010, dy: 0.00013, t: 2 },
+            { x: 0.5, y: 0.62, r: 0.4, c: '251,122,154', dx: 0.00009, dy: -0.00011, t: 4 },
+        ];
+        let mouseX = 0.5, mouseY = 0.5;
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX / window.innerWidth;
+            mouseY = e.clientY / window.innerHeight;
+        });
+
+        // particles
+        const particles = Array.from({ length: 60 }, () => ({
+            x: Math.random(), y: Math.random(),
+            r: Math.random() * 1.6 + 0.4,
+            s: Math.random() * 0.00025 + 0.00006,
+            o: Math.random() * 0.5 + 0.15
+        }));
+
+        function draw(time) {
+            ctx.clearRect(0, 0, W, H);
+            ctx.globalCompositeOperation = 'lighter';
+            blobs.forEach((b) => {
+                const px = (b.x + Math.sin(time * b.dx + b.t) * 0.06 + (mouseX - 0.5) * 0.02) * W;
+                const py = (b.y + Math.cos(time * b.dy + b.t) * 0.06 + (mouseY - 0.5) * 0.02) * H;
+                const r = b.r * Math.max(W, H);
+                const grad = ctx.createRadialGradient(px, py, 0, px, py, r);
+                grad.addColorStop(0, `rgba(${b.c},0.22)`);
+                grad.addColorStop(1, `rgba(${b.c},0)`);
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.arc(px, py, r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            ctx.globalCompositeOperation = 'source-over';
+            particles.forEach(p => {
+                p.y -= p.s;
+                if (p.y < -0.02) p.y = 1.02;
+                ctx.beginPath();
+                ctx.fillStyle = `rgba(234,241,247,${p.o})`;
+                ctx.arc(p.x * W, p.y * H, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(draw);
+        }
+        requestAnimationFrame(draw);
+
+        /* ---------- Signal line: ECG -> neural morph ---------- */
+        const signalPath = document.getElementById('signalPath');
+        const signalArea = document.getElementById('signalArea');
+        function ecgPath(offset) {
+            let d = `M0,80`;
+            for (let x = 0; x <= 900; x += 30) {
+                const phase = (x + offset) % 180;
+                let y = 80;
+                if (phase > 60 && phase < 100) {
+                    const local = phase - 60;
+                    if (local < 12) y = 80 - local * 2;
+                    else if (local < 20) y = 56 + (local - 12) * 10;
+                    else if (local < 28) y = 136 - (local - 20) * 12;
+                    else y = 40 + (local - 28) * 3.3;
+                } else {
+                    y = 80 + Math.sin((x + offset) * 0.03) * 4;
+                }
+                d += ` L${x},${y}`;
+            }
+            return d;
+        }
+        function areaPath(linePath) {
+            return linePath + ' L900,160 L0,160 Z';
+        }
+        let off = 0;
+        function animateSignal() {
+            off += 3.2;
+            const p = ecgPath(off);
+            signalPath.setAttribute('d', p);
+            signalArea.setAttribute('d', areaPath(p));
+            requestAnimationFrame(animateSignal);
+        }
+        animateSignal();
+
+        /* ---------- Tilt on hero panel ---------- */
+        const tiltPanel = document.getElementById('tiltPanel');
+        tiltPanel.addEventListener('mousemove', (e) => {
+            const rect = tiltPanel.getBoundingClientRect();
+            const px = (e.clientX - rect.left) / rect.width - 0.5;
+            const py = (e.clientY - rect.top) / rect.height - 0.5;
+            tiltPanel.style.transform = `perspective(1200px) rotateY(${px * 6}deg) rotateX(${-py * 6}deg)`;
+        });
+        tiltPanel.addEventListener('mouseleave', () => {
+            tiltPanel.style.transform = 'perspective(1200px) rotateY(0) rotateX(0)';
+        });
+
+        /* ---------- Ripple ---------- */
+        document.querySelectorAll('[data-ripple]').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const rect = this.getBoundingClientRect();
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple';
+                const size = Math.max(rect.width, rect.height);
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+                this.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 650);
+            });
+        });
+
+        /* ---------- Reveal on scroll ---------- */
+        gsap.utils.toArray('.reveal').forEach((el) => {
+            gsap.to(el, {
+                opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+                scrollTrigger: { trigger: el, start: 'top 85%' }
+            });
+        });
+
+        /* ---------- Card stagger within bento ---------- */
+        gsap.utils.toArray('.card').forEach((el, i) => {
+            gsap.fromTo(el, { opacity: 0, y: 24 }, {
+                opacity: 1, y: 0, duration: 0.7, delay: (i % 3) * 0.08, ease: 'power3.out',
+                scrollTrigger: { trigger: el, start: 'top 88%' }
+            });
+        });
+
+        /* ---------- Counters ---------- */
+        gsap.utils.toArray('.stat-num').forEach((el) => {
+            const target = parseFloat(el.dataset.count);
+            const decimals = parseInt(el.dataset.decimals);
+            const obj = { val: 0 };
+            ScrollTrigger.create({
+                trigger: el, start: 'top 90%', once: true,
+                onEnter: () => {
+                    gsap.to(obj, {
+                        val: target, duration: 1.8, ease: 'power2.out',
+                        onUpdate: () => { el.textContent = obj.val.toFixed(decimals); }
+                    });
+                }
+            });
+        });
+
+        /* ---------- Timeline fill ---------- */
+        ScrollTrigger.create({
+            trigger: '.timeline', start: 'top 70%', end: 'bottom 60%', scrub: 1,
+            onUpdate: (self) => {
+                document.getElementById('tlFill').style.width = (self.progress * 100) + '%';
+                document.querySelectorAll('.tl-step').forEach((step, i) => {
+                    if (self.progress > i / 3) step.classList.add('active'); else step.classList.remove('active');
+                });
+            }
+        });
+
+        /* ---------- Preview bars ---------- */
+        gsap.utils.toArray('.bar-fill').forEach((bar) => {
+            ScrollTrigger.create({
+                trigger: bar, start: 'top 90%', once: true,
+                onEnter: () => { gsap.to(bar, { width: bar.dataset.w + '%', duration: 1.2, ease: 'power2.out' }); }
+            });
+        });
+    </script>
+</body>
+
+</html>

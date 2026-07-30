@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact Us | AI Breast Cancer Detection</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+
+        <div class="logo">
+
+            <i class="fa-solid fa-heart-pulse"></i>
+
+            <span>BreastCare AI</span>
+
+        </div>
+
+        <ul class="nav-links">
+
+            <li>
+                <a href="{{ url_for('index') }}">
+                    Home
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('contact') }}" class="active">
+                    Contact
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('privacy') }}">
+                    Privacy
+                </a>
+            </li>
+
+            <li>
+                <a href="{{ url_for('terms') }}">
+                    Terms
+                </a>
+            </li>
+
+            {% if current_user.is_authenticated %}
+
+            <li>
+
+                <a href="{{ url_for('logout') }}" class="logout-btn">
+
+                    Logout
+
+                </a>
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+    <main class="dashboard-wrapper">
+
+        <section class="hero-banner">
+
+            <div class="hero-content">
+
+                <span class="chip">
+
+                    <i class="fa-solid fa-envelope"></i>
+
+                    Contact & Support
+
+                </span>
+
+                <h1>
+
+                    We're Here to Help
+
+                </h1>
+
+                <p>
+
+                    Have questions about our AI Breast Cancer Detection system,
+                    deployment, prediction results, research methodology, or technical
+                    implementation? Feel free to reach out.
+
+                </p>
+
+            </div>
+
+            <div class="hero-art">
+
+                <i class="fa-solid fa-headset" style="font-size:10rem;color:#06b6d4;"></i>
+
+            </div>
+
+        </section>
+
+        <section class="features-grid">
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-envelope-open-text fa-2x"></i>
+
+                <h3>Email</h3>
+
+                <p>
+
+                    support@breastcareai.com
+
+                </p>
+
+                <p>
+
+                    For technical assistance and general queries.
+
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-phone fa-2x"></i>
+
+                <h3>Support</h3>
+
+                <p>
+
+                    Monday - Friday
+
+                </p>
+
+                <p>
+
+                    09:00 AM – 06:00 PM IST
+
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-location-dot fa-2x"></i>
+
+                <h3>Location</h3>
+
+                <p>
+
+                    Pune, Maharashtra
+
+                </p>
+
+                <p>
+
+                    India
+
+                </p>
+
+            </div>
+
+            <div class="feature-card">
+
+                <i class="fa-solid fa-user-graduate fa-2x"></i>
+
+                <h3>Project Type</h3>
+
+                <p>
+
+                    Final Year Engineering Project
+
+                </p>
+
+                <p>
+
+                    AI + Deep Learning
+
+                </p>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-paper-plane"></i>
+
+                Send us a Message
+
+            </h2>
+
+            <form class="upload-form" action="#" method="post">
+
+                <div class="form-group">
+
+                    <label>
+
+                        Full Name
+
+                    </label>
+
+                    <input type="text" name="name" placeholder="Enter your full name" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Email Address
+
+                    </label>
+
+                    <input type="email" name="email" placeholder="Enter your email" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Subject
+
+                    </label>
+
+                    <input type="text" name="subject" placeholder="Enter subject">
+
+                </div>
+
+                <div class="form-group">
+
+                    <label>
+
+                        Message
+
+                    </label>
+
+                    <textarea rows="6" name="message" placeholder="Write your message..." required></textarea>
+
+                </div>
+
+                <button type="submit" class="submit-btn">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    Send Message
+
+                </button>
+
+            </form>
+
+        </section>
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-circle-question"></i>
+
+                Frequently Asked Questions
+
+            </h2>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-brain fa-2x"></i>
+
+                    <h3>
+
+                        How accurate is the AI model?
+
+                    </h3>
+
+                    <p>
+
+                        The prediction accuracy depends on the trained deep learning
+                        model and dataset. Results are intended for research and
+                        educational purposes and should always be verified by qualified
+                        medical professionals.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-image fa-2x"></i>
+
+                    <h3>
+
+                        Are uploaded images stored?
+
+                    </h3>
+
+                    <p>
+
+                        Uploaded mammogram images are processed only to generate
+                        predictions. Permanent storage depends on the deployment
+                        configuration chosen by the project administrator.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-user-doctor fa-2x"></i>
+
+                    <h3>
+
+                        Can this replace a doctor?
+
+                    </h3>
+
+                    <p>
+
+                        No. The system is an AI-assisted decision support tool and
+                        must never be considered a substitute for professional medical
+                        diagnosis or clinical judgment.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-users"></i>
+
+                Connect With Us
+
+            </h2>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+
+                    <i class="fab fa-github fa-2x"></i>
+
+                    <h3>
+
+                        GitHub
+
+                    </h3>
+
+                    <p>
+
+                        Explore the source code, project documentation, deployment
+                        instructions, and future improvements.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fab fa-linkedin fa-2x"></i>
+
+                    <h3>
+
+                        LinkedIn
+
+                    </h3>
+
+                    <p>
+
+                        Connect professionally for collaboration, internships,
+                        research discussions, and software development opportunities.
+
+                    </p>
+
+                </div>
+
+                <div class="feature-card">
+
+                    <i class="fa-solid fa-book-open fa-2x"></i>
+
+                    <h3>
+
+                        Research
+
+                    </h3>
+
+                    <p>
+
+                        This project demonstrates the application of Artificial
+                        Intelligence and Deep Learning for assisting in early breast
+                        cancer detection using mammography images.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="glass-panel">
+
+            <h2>
+
+                <i class="fa-solid fa-triangle-exclamation"></i>
+
+                Medical Disclaimer
+
+            </h2>
+
+            <p style="margin-top:20px;line-height:1.9;color:#cbd5e1;">
+
+                This website is developed as a Final Year Engineering Project for
+                educational, research, and demonstration purposes. AI-generated
+                predictions are produced by a deep learning model and should not be
+                interpreted as a confirmed medical diagnosis. Clinical decisions must
+                always be made by qualified healthcare professionals after reviewing
+                the patient's complete medical history, imaging studies, laboratory
+                findings, and physical examination.
+
+            </p>
+
+        </section>
+
+        <footer class="footer">
+
+            <div class="footer-content">
+
+                <div>
+
+                    <h3>
+
+                        AI Breast Cancer Detection
+
+                    </h3>
+
+                    <p>
+
+                        An intelligent deep learning platform designed to assist in the
+                        early detection of breast cancer from mammography images while
+                        promoting awareness, education, and research.
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Quick Links
+
+                    </h4>
+
+                    <ul>
+
+                        <li>
+
+                            <a href="{{ url_for('index') }}">
+
+                                Home
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('privacy') }}">
+
+                                Privacy Policy
+
+                            </a>
+
+                        </li>
+
+                        <li>
+
+                            <a href="{{ url_for('terms') }}">
+
+                                Terms & Conditions
+
+                            </a>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div>
+
+                    <h4>
+
+                        Contact
+
+                    </h4>
+
+                    <p>
+
+                        Email:
+                        support@breastcareai.com
+
+                    </p>
+
+                    <p>
+
+                        Pune, Maharashtra, India
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <hr style="margin:40px 0;border-color:rgba(255,255,255,.08);">
+
+            <p style="text-align:center;color:#94a3b8;">
+
+                © {{ now().year if now else "2026" }}
+                AI Breast Cancer Detection using Deep Learning.
+                All Rights Reserved.
+
+            </p>
+
+        </footer>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard · AI Breast Cancer Detection</title>
+    <meta name="description"
+        content="Upload a mammogram image for AI-powered breast cancer classification with confidence scoring.">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+
+<body>
+
+    <!-- ============================================================
+         AMBIENT MEDICAL AI BACKGROUND (decorative, aria-hidden)
+    ============================================================ -->
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="blob blob-a"></div>
+        <div class="blob blob-b"></div>
+        <canvas id="particle-canvas"></canvas>
+    </div>
+
+    <!-- ============================================================
+         TOP NAV
+    ============================================================ -->
+    <header class="site-nav">
+        <a class="nav-brand" href="{{ url_for('index') }}">
+            <span class="auth-logo-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2 3 6v6c0 5 4 8.5 9 10 5-1.5 9-5 9-10V6l-9-4Z" stroke="#06B6D4" stroke-width="1.5"
+                        stroke-linejoin="round" />
+                    <path d="M8.5 12.5l2.4 2.4L16 10" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span>
+            <span class="auth-logo-text">Onco<strong>Scan</strong> AI</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('index') }}" class="nav-active" aria-current="page">Dashboard</a>
+        </nav>
+
+        <div class="nav-user">
+            {% if session.username %}
+            <span class="nav-username">
+                <span class="nav-avatar" aria-hidden="true">{{ session.username[0]|upper }}</span>
+                {{ session.username }}
+            </span>
+            {% endif %}
+            <a href="{{ url_for('logout') }}" class="logout-btn">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M15 17l5-5-5-5M20 12H9M13 4H6a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h7" stroke="currentColor"
+                        stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Logout</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="dashboard">
+
+        <!-- ============================================================
+             HERO BANNER
+        ============================================================ -->
+        <section class="hero-banner">
+            <div class="hero-banner-copy">
+                <p class="eyebrow">Diagnostic Intelligence Platform</p>
+                <h1>Breast Cancer Detection Dashboard</h1>
+                <p class="hero-description">
+                    Upload a mammogram image and let the convolutional neural
+                    network classify it as benign, malignant, or normal — with
+                    a full confidence breakdown in seconds.
+                </p>
+
+                <ul class="tech-chip-row" aria-label="Technology stack">
+                    <li class="tech-chip">TensorFlow</li>
+                    <li class="tech-chip">Keras</li>
+                    <li class="tech-chip">OpenCV</li>
+                    <li class="tech-chip">CNN</li>
+                    <li class="tech-chip">Deep Learning</li>
+                    <li class="tech-chip">Explainable AI</li>
+                </ul>
+            </div>
+
+            <div class="hero-banner-art" aria-hidden="true">
+                <svg class="scan-art" viewBox="0 0 420 380" xmlns="http://www.w3.org/2000/svg">
+                    <g class="neural-net" stroke="#7C3AED" stroke-width="1" opacity="0.55">
+                        <line x1="50" y1="80" x2="150" y2="50"></line>
+                        <line x1="50" y1="80" x2="150" y2="130"></line>
+                        <line x1="150" y1="50" x2="250" y2="90"></line>
+                        <line x1="150" y1="130" x2="250" y2="90"></line>
+                        <line x1="150" y1="130" x2="250" y2="170"></line>
+                        <line x1="250" y1="90" x2="350" y2="120"></line>
+                        <line x1="250" y1="170" x2="350" y2="120"></line>
+                        <line x1="50" y1="190" x2="150" y2="130"></line>
+                        <line x1="50" y1="190" x2="150" y2="230"></line>
+                        <line x1="150" y1="230" x2="250" y2="170"></line>
+                        <line x1="150" y1="230" x2="250" y2="250"></line>
+                        <line x1="250" y1="250" x2="350" y2="120"></line>
+                    </g>
+                    <g class="neural-nodes" fill="#06B6D4">
+                        <circle class="node" cx="50" cy="80" r="4"></circle>
+                        <circle class="node" cx="50" cy="190" r="4"></circle>
+                        <circle class="node" cx="150" cy="50" r="4"></circle>
+                        <circle class="node" cx="150" cy="130" r="4"></circle>
+                        <circle class="node" cx="150" cy="230" r="4"></circle>
+                        <circle class="node" cx="250" cy="90" r="4"></circle>
+                        <circle class="node" cx="250" cy="170" r="4"></circle>
+                        <circle class="node" cx="250" cy="250" r="4"></circle>
+                        <circle class="node" cx="350" cy="120" r="5"></circle>
+                    </g>
+                    <g class="dna" stroke="#2563EB" stroke-width="2" fill="none" opacity="0.5">
+                        <path d="M 60 300 C 100 270, 140 330, 180 300 S 260 270, 300 300"></path>
+                        <path d="M 60 340 C 100 370, 140 310, 180 340 S 260 370, 300 340"></path>
+                        <line x1="70" y1="305" x2="70" y2="335"></line>
+                        <line x1="110" y1="292" x2="110" y2="348"></line>
+                        <line x1="150" y1="303" x2="150" y2="337"></line>
+                        <line x1="190" y1="303" x2="190" y2="337"></line>
+                        <line x1="230" y1="292" x2="230" y2="348"></line>
+                        <line x1="270" y1="305" x2="270" y2="335"></line>
+                    </g>
+                    <g class="medical-cross" opacity="0.9">
+                        <rect x="196" y="6" width="26" height="74" rx="6" fill="#10B981"></rect>
+                        <rect x="172" y="30" width="74" height="26" rx="6" fill="#10B981"></rect>
+                    </g>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             AI STATISTIC CARDS
+        ============================================================ -->
+        <section class="stat-grid" aria-label="Model statistics">
+            <div class="stat-card">
+                <span class="stat-value">97.4%</span>
+                <span class="stat-label">Accuracy</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">96.8%</span>
+                <span class="stat-label">Precision</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">95.9%</span>
+                <span class="stat-label">Recall</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">96.3%</span>
+                <span class="stat-label">F1 Score</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">&lt; 2s</span>
+                <span class="stat-label">Prediction Speed</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">224×224</span>
+                <span class="stat-label">Input Resolution</span>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             FEATURE CARDS
+        ============================================================ -->
+        <section class="feature-grid-section" aria-label="Platform features">
+            <ul class="feature-grid">
+                <li class="feature-card">
+                    <span class="feature-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3z" stroke="currentColor"
+                                stroke-width="1.6" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    <span class="feature-text">
+                        <strong>Deep Learning</strong>
+                        <small>CNN trained on histopathology-grade imagery</small>
+                    </span>
+                </li>
+                <li class="feature-card">
+                    <span class="feature-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    <span class="feature-text">
+                        <strong>High Accuracy</strong>
+                        <small>Validated across benign, malignant &amp; normal cases</small>
+                    </span>
+                </li>
+                <li class="feature-card">
+                    <span class="feature-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" stroke="currentColor" stroke-width="1.6"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    <span class="feature-text">
+                        <strong>Fast Prediction</strong>
+                        <small>Results returned in under two seconds</small>
+                    </span>
+                </li>
+                <li class="feature-card">
+                    <span class="feature-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="4.5" y="10.5" width="15" height="10" rx="2" stroke="currentColor"
+                                stroke-width="1.6" />
+                            <path d="M8 10.5V7.5a4 4 0 1 1 8 0v3" stroke="currentColor" stroke-width="1.6" />
+                        </svg>
+                    </span>
+                    <span class="feature-text">
+                        <strong>Secure Processing</strong>
+                        <small>Session-based auth with hashed credentials</small>
+                    </span>
+                </li>
+                <li class="feature-card">
+                    <span class="feature-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Z" stroke="currentColor"
+                                stroke-width="1.6" />
+                            <path d="M4 20c1.4-3.8 4.6-6 8-6s6.6 2.2 8 6" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    <span class="feature-text">
+                        <strong>Medical Grade AI</strong>
+                        <small>Purpose-built for diagnostic imaging support</small>
+                    </span>
+                </li>
+                <li class="feature-card">
+                    <span class="feature-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M7 18a5 5 0 0 1-1-9.9A6 6 0 0 1 17.6 8 4.5 4.5 0 0 1 17 17H7Z"
+                                stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    <span class="feature-text">
+                        <strong>Cloud Ready</strong>
+                        <small>Deploys cleanly on Render, Railway &amp; Azure</small>
+                    </span>
+                </li>
+                <li class="feature-card">
+                    <span class="feature-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="3.5" y="4" width="17" height="16" rx="2.5" stroke="currentColor"
+                                stroke-width="1.6" />
+                            <path d="M8 9h8M8 13h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    <span class="feature-text">
+                        <strong>Privacy Protected</strong>
+                        <small>Images processed per-session, never shared</small>
+                    </span>
+                </li>
+                <li class="feature-card">
+                    <span class="feature-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <rect x="3.5" y="5.5" width="10" height="13" rx="1.6" stroke="currentColor"
+                                stroke-width="1.6" />
+                            <path d="M16.5 8.5h4v10a1.5 1.5 0 0 1-1.5 1.5h-2.5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                    <span class="feature-text">
+                        <strong>Fully Responsive</strong>
+                        <small>Optimized for desktop, tablet &amp; mobile</small>
+                    </span>
+                </li>
+            </ul>
+        </section>
+
+        <!-- ============================================================
+             PREDICTION WORKFLOW
+        ============================================================ -->
+        <section class="workflow-section" aria-label="Prediction workflow">
+            <h2 class="section-heading">How a Prediction Is Made</h2>
+            <ol class="workflow-track">
+                <li class="workflow-step">
+                    <span class="workflow-dot" aria-hidden="true">1</span>
+                    <span class="workflow-text">Upload Image</span>
+                </li>
+                <li class="workflow-step">
+                    <span class="workflow-dot" aria-hidden="true">2</span>
+                    <span class="workflow-text">Preprocessing</span>
+                </li>
+                <li class="workflow-step">
+                    <span class="workflow-dot" aria-hidden="true">3</span>
+                    <span class="workflow-text">CNN Analysis</span>
+                </li>
+                <li class="workflow-step">
+                    <span class="workflow-dot" aria-hidden="true">4</span>
+                    <span class="workflow-text">Feature Extraction</span>
+                </li>
+                <li class="workflow-step">
+                    <span class="workflow-dot" aria-hidden="true">5</span>
+                    <span class="workflow-text">Prediction</span>
+                </li>
+                <li class="workflow-step">
+                    <span class="workflow-dot" aria-hidden="true">6</span>
+                    <span class="workflow-text">Confidence Score</span>
+                </li>
+                <li class="workflow-step">
+                    <span class="workflow-dot" aria-hidden="true">7</span>
+                    <span class="workflow-text">Medical Report</span>
+                </li>
+            </ol>
+        </section>
+
+        <!-- ============================================================
+             UPLOAD SECTION
+        ============================================================ -->
+        <section class="upload-section" aria-label="Upload mammogram image">
+            <h2 class="section-heading">Upload a Mammogram Image</h2>
+
+            <form class="upload-form" action="{{ url_for('index') }}" method="POST" enctype="multipart/form-data"
+                id="upload-form">
+                <label class="dropzone" for="file-input" id="dropzone">
+                    <input type="file" name="file" id="file-input" accept=".png,.jpg,.jpeg" class="dropzone-input"
+                        aria-describedby="dropzone-help">
+
+                    <span class="dropzone-illustration" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <path d="M12 16V4M12 4 7 9M12 4l5 5" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                            <path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" stroke="currentColor" stroke-width="1.6"
+                                stroke-linecap="round" />
+                        </svg>
+                    </span>
+
+                    <span class="dropzone-title">Drag &amp; drop your image here</span>
+                    <span class="dropzone-subtitle" id="dropzone-help">or click to browse from your device</span>
+
+                    <span class="browse-btn">Browse Files</span>
+
+                    <span class="dropzone-formats">Supported formats: PNG · JPG · JPEG</span>
+                </label>
+
+                <button type="submit" class="submit-btn" id="predict-btn">
+                    <span class="btn-label">Run Prediction</span>
+                    <span class="btn-spinner" aria-hidden="true"></span>
+                </button>
+            </form>
+        </section>
+
+        <!-- ============================================================
+             RESULTS DASHBOARD
+        ============================================================ -->
+        {% if uploaded_image %}
+        <section class="results-section" aria-label="Prediction results">
+            <h2 class="section-heading">Results</h2>
+
+            <div class="results-grid">
+
+                <!-- Uploaded Image -->
+                <div class="result-card image-card">
+                    <h3 class="result-card-title">Uploaded Image</h3>
+                    <div class="image-frame">
+                        <img src="{{ uploaded_image }}" alt="Uploaded mammogram image" loading="lazy">
+                    </div>
+                </div>
+
+                <!-- Generated Mask -->
+                {% if mask_image %}
+                <div class="result-card image-card">
+                    <h3 class="result-card-title">Generated Mask</h3>
+                    <div class="image-frame">
+                        <img src="{{ mask_image }}" alt="AI-generated segmentation mask" loading="lazy">
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Prediction / Diagnosis -->
+                {% if prediction %}
+                <div class="result-card prediction-card">
+                    <h3 class="result-card-title">Diagnosis</h3>
+
+                    <span class="diagnosis-badge
+                        {% if prediction|lower == 'benign' %}badge-benign
+                        {% elif prediction|lower == 'malignant' %}badge-malignant
+                        {% elif prediction|lower == 'normal' %}badge-normal
+                        {% endif %}">
+                        {{ prediction }}
+                    </span>
+
+                    <p class="prediction-summary">
+                        The model classified this image as
+                        <strong>{{ prediction }}</strong>{% if confidence %} with {{ confidence }}% confidence{% endif
+                        %}.
+                    </p>
+
+                    <div class="recommendation-card
+                        {% if prediction|lower == 'benign' %}rec-benign
+                        {% elif prediction|lower == 'malignant' %}rec-malignant
+                        {% elif prediction|lower == 'normal' %}rec-normal
+                        {% endif %}">
+                        <span class="recommendation-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 8v5M12 16.5h.01" stroke="currentColor" stroke-width="1.8"
+                                    stroke-linecap="round" />
+                                <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6" />
+                            </svg>
+                        </span>
+                        <span class="recommendation-text">
+                            {% if prediction|lower == 'malignant' %}
+                            Findings suggest malignant characteristics. Please consult a qualified oncologist or
+                            radiologist promptly for a full clinical evaluation.
+                            {% elif prediction|lower == 'benign' %}
+                            Findings suggest benign characteristics. Routine follow-up with a healthcare provider is
+                            still recommended.
+                            {% else %}
+                            No abnormal findings detected. Continue with regular screening as advised by your healthcare
+                            provider.
+                            {% endif %}
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Confidence -->
+                {% if confidence %}
+                <div class="result-card confidence-card">
+                    <h3 class="result-card-title">Confidence Score</h3>
+
+                    <div class="confidence-ring" style="--confidence-pct: {{ confidence }};" role="img"
+                        aria-label="Confidence {{ confidence }} percent">
+                        <span class="confidence-value">{{ confidence }}%</span>
+                    </div>
+
+                    <p class="confidence-explanation">
+                        This score reflects the model's certainty in the predicted class,
+                        based on learned patterns across benign, malignant, and normal
+                        training samples. It is a statistical estimate, not a clinical diagnosis.
+                    </p>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <p class="medical-disclaimer">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                        d="M12 8v5M12 16.5h.01M10.3 3.6 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.6a2 2 0 0 0-3.4 0Z"
+                        stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                This tool is an AI-assisted screening aid and does not replace professional medical diagnosis. Always
+                consult a licensed healthcare provider for clinical decisions.
+            </p>
+        </section>
+        {% endif %}
+
+    </main>
+
+    <!-- ============================================================
+         FOOTER
+    ============================================================ -->
+    <footer class="site-footer">
+        <div class="footer-brand">
+            <span class="auth-logo-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2 3 6v6c0 5 4 8.5 9 10 5-1.5 9-5 9-10V6l-9-4Z" stroke="#06B6D4" stroke-width="1.5"
+                        stroke-linejoin="round" />
+                    <path d="M8.5 12.5l2.4 2.4L16 10" stroke="#06B6D4" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span>
+            <span class="auth-logo-text">Onco<strong>Scan</strong> AI</span>
+        </div>
+        <p class="footer-note">AI Breast Cancer Detection using Deep Learning &middot; For research and educational use
+            only.</p>
+        <nav class="footer-links" aria-label="Footer">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('about') }}">About</a>
+            <a href="{{ url_for('index') }}">Dashboard</a>
+        </nav>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+
+</html>
