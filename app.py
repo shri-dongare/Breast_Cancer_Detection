@@ -23,7 +23,14 @@ db = SQLAlchemy(app)
 
 
 MODEL_PATH = os.path.join("model", "breast_cancer_model.h5")
-model = load_model(MODEL_PATH)
+
+model = None
+
+def get_model():
+    global model
+    if model is None:
+        model = load_model(MODEL_PATH)
+    return model
 # Define classes
 classes = ["Benign", "Malignant", "Normal"]
 ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
@@ -89,6 +96,8 @@ def generate_mask(image_path, filename):
     
     # Create full path for mask file
     mask_path = os.path.join(mask_dir, f"mask_{filename}")
+
+    
     
     # Save the mask image
     success = cv2.imwrite(mask_path, mask)
@@ -175,40 +184,6 @@ def register():
 
     return render_template('register.html')
 
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    flash('Logged out successfully!', 'success')
-    return redirect(url_for('login'))
-
-@app.route("/test123")
-def test123():
-    return "TEST ROUTE WORKS"
-
-@app.route("/terms")
-def terms():
-    return render_template("terms.html")
-
-
-@app.route("/privacy")
-def privacy():
-    return render_template("privacy.html")
-
-
-@app.route("/about")
-def about():
-    return render_template("about.html")
-
-
-@app.route("/contact")
-def contact():
-    return render_template("contact.html")
-
-
-@app.route("/home")
-def home():
-    return redirect(url_for("index"))
-
 # Protect routes that require login
 def login_required(route_function):
     @wraps(route_function)
@@ -219,6 +194,46 @@ def login_required(route_function):
         return route_function(*args, **kwargs)
 
     return wrapper
+
+@app.route('/logout')
+@login_required
+def logout():
+    session.pop('username', None)
+    flash('Logged out successfully!', 'success')
+    return redirect(url_for('login'))
+
+
+
+@app.route("/terms")
+@login_required
+def terms():
+    return render_template("terms.html")
+
+
+
+
+@app.route("/privacy")
+@login_required
+def privacy():
+    return render_template("privacy.html")
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
+@app.route("/contact")
+@login_required
+def contact():
+    return render_template("contact.html")
+
+
+@app.route("/home")
+def home():
+    return redirect(url_for("index"))
+
+
 
 @app.route("/", methods=["GET", "POST"])
 @login_required
@@ -248,7 +263,7 @@ def index():
 
             # Preprocess and predict
             img_array = preprocess_image(filepath)
-            predictions = model.predict(img_array)
+            predictions = get_model().predict(img_array)
             predicted_class = classes[np.argmax(predictions)]
             confidence = np.max(predictions) * 100
 
